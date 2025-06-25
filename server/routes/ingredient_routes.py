@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
-from app.models import Ingredient, PriceEntry
+from server.models import Ingredient, PriceEntry
 
 ingredients_bp = Blueprint('ingredients', __name__, url_prefix='/api/ingredients')
 

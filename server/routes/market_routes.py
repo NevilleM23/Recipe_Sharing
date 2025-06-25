@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import Market
+from server.models import Market
 
 markets_bp = Blueprint('markets', __name__, url_prefix='/api/markets')
 

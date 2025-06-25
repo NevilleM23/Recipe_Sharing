@@ -1,4 +1,4 @@
-from app.models import Recipe, Ingredient, RecipeIngredient, Favorite, db
+from server.models import Recipe, Ingredient, RecipeIngredient, Favorite, db
 from sqlalchemy import or_, and_
 
 class RecipeService:

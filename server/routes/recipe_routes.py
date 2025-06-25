@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.services.recipe_service import RecipeService
-from app.utils.decorators import validate_json
-from app.models import Recipe, Favorite
+from server.services.recipe_service import RecipeService
+from server.utils.decorators import validate_json
+from server.models import Recipe, Favorite
 
 recipes_bp = Blueprint('recipes', __name__, url_prefix='/api/recipes')
 

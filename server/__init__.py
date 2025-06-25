@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTExtended
 from flask_cors import CORS
-from app.config import Config
+from server.config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -20,10 +20,10 @@ def create_app(config_class=Config):
     CORS(app)
     
     # Register blueprints
-    from app.routes.auth import auth_bp
-    from app.routes.recipes import recipes_bp
-    from app.routes.ingredients import ingredients_bp
-    from app.routes.markets import markets_bp
+    from server.routes.auth_routes import auth_bp
+    from server.routes.recipe_routes import recipes_bp
+    from server.routes.ingredient_routes import ingredients_bp
+    from server.routes.market_routes import markets_bp
     
     app.register_blueprint(auth_bp)
     app.register_blueprint(recipes_bp)
