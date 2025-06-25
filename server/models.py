@@ -11,11 +11,8 @@ class User(db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
-    recipes = db.relationship('Recipe', backref='author', lazy=True)
+    recipes = db.relationship('Recipe', backref='author', lazy=True, cascade='all, delete-orphan')
     favorites = db.relationship('Favorite', backref='user', lazy=True, cascade='all, delete-orphan')
-    
-    def __repr__(self):
-        return f'<User {self.email}>'
 
 class Recipe(db.Model):
     __tablename__ = 'recipes'
@@ -35,9 +32,6 @@ class Recipe(db.Model):
     
     ingredients = db.relationship('RecipeIngredient', backref='recipe', lazy=True, cascade='all, delete-orphan')
     favorites = db.relationship('Favorite', backref='recipe', lazy=True, cascade='all, delete-orphan')
-    
-    def __repr__(self):
-        return f'<Recipe {self.title}>'
 
 class Ingredient(db.Model):
     __tablename__ = 'ingredients'
@@ -50,9 +44,6 @@ class Ingredient(db.Model):
     
     recipes = db.relationship('RecipeIngredient', backref='ingredient', lazy=True)
     prices = db.relationship('PriceEntry', backref='ingredient', lazy=True, cascade='all, delete-orphan')
-    
-    def __repr__(self):
-        return f'<Ingredient {self.name}>'
 
 class RecipeIngredient(db.Model):
     __tablename__ = 'recipe_ingredients'
@@ -62,9 +53,6 @@ class RecipeIngredient(db.Model):
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'), nullable=False)
     quantity = db.Column(db.Float, nullable=False)
     notes = db.Column(db.String(100))
-    
-    def __repr__(self):
-        return f'<RecipeIngredient {self.id}>'
 
 class Market(db.Model):
     __tablename__ = 'markets'
@@ -78,9 +66,6 @@ class Market(db.Model):
     longitude = db.Column(db.Float)
     
     prices = db.relationship('PriceEntry', backref='market', lazy=True, cascade='all, delete-orphan')
-    
-    def __repr__(self):
-        return f'<Market {self.name}>'
 
 class PriceEntry(db.Model):
     __tablename__ = 'price_entries'
@@ -90,9 +75,6 @@ class PriceEntry(db.Model):
     market_id = db.Column(db.Integer, db.ForeignKey('markets.id'), nullable=False)
     price = db.Column(db.Float, nullable=False)
     date_recorded = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    def __repr__(self):
-        return f'<PriceEntry {self.id}>'
 
 class Favorite(db.Model):
     __tablename__ = 'favorites'
@@ -105,6 +87,3 @@ class Favorite(db.Model):
     __table_args__ = (
         db.UniqueConstraint('user_id', 'recipe_id', name='unique_user_recipe'),
     )
-    
-    def __repr__(self):
-        return f'<Favorite {self.id}>'
