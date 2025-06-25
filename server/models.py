@@ -1,0 +1,13 @@
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
+db = SQLAlchemy()
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120))
+    email = db.Column(db.String(120), unique=True)
+    phone = db.Column(db.String(20))
+    password_hash = db.Column(db.String(255))
+    recipes = db.relationship("Recipe", backref="user", lazy=True)
+    favorites = db.relationship("Favorite", backref="user", lazy=True)
