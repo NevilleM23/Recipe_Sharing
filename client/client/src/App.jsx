@@ -10,7 +10,14 @@ function App() {
       <div className='app'>
         <Header />
         <main>
-          <Routes></Routes>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+              <Route path="/recipe/:id" element={<RecipePage />} />
+              <Route path="/map" element={<MapPage />} />
+              <Route path="/profile" element={ <ProfilePage />  } />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+          </Routes>
         </main>
       </div>
     </Router>
