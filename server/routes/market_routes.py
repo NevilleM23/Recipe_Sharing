@@ -8,7 +8,7 @@ def get_markets():
     location = request.args.get('near')
     markets = Market.query.all()
     
-    # In a real app, we would filter by location using geospatial queries
+    # In a real app, we filter by location using geospatial queries
     return jsonify([{
         'id': market.id,
         'name': market.name,
