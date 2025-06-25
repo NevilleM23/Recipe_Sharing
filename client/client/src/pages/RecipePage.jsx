@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import "./RecipePage.css"
 
 const RecipePage = () => {
   const { id } = useParams();
@@ -37,6 +38,91 @@ const RecipePage = () => {
 
   return (
     <div className="recipe-page">
+      <button className="back-button" onClick={() => navigate(-1)}>
+        ← Back to recipes
+      </button>
+
+      <div className="recipe-header">
+        <h1 className="recipe-title">{recipe.title}</h1>
+        <p className="recipe-author">By {recipe.author}</p>
+      </div>
+
+      <div className="recipe-image-container">
+        <div className="recipe-image-placeholder"></div>
+      </div>
+
+      <div className="recipe-info-grid">
+        <div className="info-card">
+          <div className="info-text">
+            <span className="info-label">Prep Time</span>
+            <span className="info-value">{recipe.cook_time} mins</span>
+          </div>
+        </div>
+        
+        <div className="info-card">
+          <div className="info-text">
+            <span className="info-label">Difficulty</span>
+            <span className="info-value">{recipe.difficulty}</span>
+          </div>
+        </div>
+        
+        <div className="info-card">
+          <div className="info-text">
+            <span className="info-label">Budget</span>
+            <span className="info-value">{recipe.budget_rating}</span>
+          </div>
+        </div>
+        
+        <button 
+          className={`like-button ${isLiked ? 'liked' : ''}`}
+          onClick={handleLike}
+        >
+          <span className="heart-icon">❤</span>
+          {isLiked ? 'Liked' : 'Like'}
+        </button>
+      </div>
+
+      <div className="section ingredients-section">
+        <h2 className="section-title">Ingredients</h2>
+        <ul className="ingredients-list">
+          {recipe.ingredients.map((ingredient) => (
+            <li key={ingredient.id} className="ingredient-item">
+              <span className="ingredient-quantity">{ingredient.quantity} {ingredient.unit}</span>
+              <span className="ingredient-name">{ingredient.name}</span>
+              {ingredient.price && (
+                <span className="ingredient-price">${ingredient.price.toFixed(2)}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="section instructions-section">
+        <h2 className="section-title">Cooking Instructions</h2>
+        <div className="instructions-container">
+          {recipe.steps.split('\n').map((step, index) => (
+            <div key={index} className="instruction-step">
+              <div className="step-number">{index + 1}</div>
+              <p className="step-text">{step}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="cost-banner">
+        <div className="cost-info">
+          <h3 className="cost-title">Estimated Total Cost</h3>
+          <p className="cost-description">Based on current local market prices</p>
+        </div>
+        <div className="cost-value">${recipe.total_cost.toFixed(2)}</div>
+      </div>
+
+      <button 
+        className="find-ingredients-button"
+        onClick={handleFindIngredients}
+      >
+        Find Ingredients Near Me
+      </button>
     </div>
   );
 };
