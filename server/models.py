@@ -44,3 +44,9 @@ class Market(db.Model):
     contact = db.Column(db.String(50))
     operating_hours = db.Column(db.String(100))
     price_entries = db.relationship("PriceEntry", backref="market", lazy=True)
+
+class PriceEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey("ingredient.id"), nullable=False)
+    market_id = db.Column(db.Integer, db.ForeignKey("market.id"), nullable=False)
+    price = db.Column(db.Float)
