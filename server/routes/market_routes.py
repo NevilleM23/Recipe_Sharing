@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import Market, db
+from app.models import Market
 
 markets_bp = Blueprint('markets', __name__, url_prefix='/api/markets')
 
@@ -8,7 +8,6 @@ def get_markets():
     location = request.args.get('near')
     markets = Market.query.all()
     
-    # In a real app, we filter by location using geospatial queries
     return jsonify([{
         'id': market.id,
         'name': market.name,
