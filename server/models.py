@@ -36,3 +36,11 @@ class RecipeIngredient(db.Model):
     recipe_id = db.Column(db.Integer, db.ForeignKey("recipe.id"), nullable=False)
     ingredient_id = db.Column(db.Integer, db.ForeignKey("ingredient.id"), nullable=False)
     quantity = db.Column(db.Float)
+
+class Market(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120))
+    location = db.Column(db.String(200))
+    contact = db.Column(db.String(50))
+    operating_hours = db.Column(db.String(100))
+    price_entries = db.relationship("PriceEntry", backref="market", lazy=True)
