@@ -14,6 +14,7 @@ class RecipeService:
                         Recipe.title.ilike(search),
                         Recipe.description.ilike(search)
                     )
+                )
             
             if 'difficulty' in filters:
                 query = query.filter_by(difficulty=filters['difficulty'])
@@ -44,7 +45,6 @@ class RecipeService:
         db.session.add(recipe)
         db.session.commit()
         
-        # Add ingredients if provided
         if 'ingredients' in data:
             for ingredient_data in data['ingredients']:
                 ingredient = Ingredient.query.filter_by(name=ingredient_data['name']).first()
