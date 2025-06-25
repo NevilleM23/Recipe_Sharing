@@ -1,0 +1,122 @@
+/* src/components/RecipeCard/RecipeCard.css */
+.recipe-card {
+  display: block;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.card-image {
+  height: 200px;
+  position: relative;
+}
+
+.recipe-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a0aec0;
+  font-size: 14px;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.recipe-title {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: #2d3748;
+  height: 60px;
+  overflow: hidden;
+  display:flexbox;
+}
+
+.recipe-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #edf2f7;
+  padding-bottom: 15px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.meta-label {
+  font-weight: 600;
+  margin-bottom: 3px;
+  color: #ff6600;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.like-btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #718096;
+  font-size: 0.95rem;
+  padding: 5px 10px;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+
+.like-btn:hover {
+  background-color: #fff5f5;
+  color: #e53e3e;
+}
+
+.like-btn.liked {
+  color: #e53e3e;
+}
+
+.heart-icon {
+  margin-right: 5px;
+  font-size: 1.1rem;
+}
+
+.view-recipe {
+  color: #ff6600;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.recipe-card:hover .view-recipe {
+  text-decoration: underline;
+}
