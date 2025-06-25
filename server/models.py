@@ -22,3 +22,11 @@ class Recipe(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     ingredients = db.relationship("RecipeIngredient", backref="recipe", lazy=True)
     favorites = db.relationship("Favorite", backref="recipe", lazy=True)
+
+class Ingredient(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120))
+    category = db.Column(db.String(100))
+    unit = db.Column(db.String(20))
+    avg_price = db.Column(db.Float)
+    price_entries = db.relationship("PriceEntry", backref="ingredient", lazy=True)
