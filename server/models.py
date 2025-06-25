@@ -1,58 +1,110 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
-db = SQLAlchemy()
+from app import db
 
 class User(db.Model):
+    __tablename__ = 'users'
+    
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
-    email = db.Column(db.String(120), unique=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
     phone = db.Column(db.String(20))
-    password_hash = db.Column(db.String(255))
-    recipes = db.relationship("Recipe", backref="user", lazy=True)
-    favorites = db.relationship("Favorite", backref="user", lazy=True)
+    password_hash = db.Column(db.String(128), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    recipes = db.relationship('Recipe', backref='author', lazy=True)
+    favorites = db.relationship('Favorite', backref='user', lazy=True, cascade='all, delete-orphan')
+    
+    def __repr__(self):
+        return f'<User {self.email}>'
 
 class Recipe(db.Model):
+    __tablename__ = 'recipes'
+    
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(120))
-    steps = db.Column(db.Text)
-    cook_time = db.Column(db.Integer)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    steps = db.Column(db.Text, nullable=False)
+    cook_time = db.Column(db.Integer)  # in minutes
     difficulty = db.Column(db.String(50))
     budget_rating = db.Column(db.String(50))
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    ingredients = db.relationship("RecipeIngredient", backref="recipe", lazy=True)
-    favorites = db.relationship("Favorite", backref="recipe", lazy=True)
+    image_url = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
+    ingredients = db.relationship('RecipeIngredient', backref='recipe', lazy=True, cascade='all, delete-orphan')
+    favorites = db.relationship('Favorite', backref='recipe', lazy=True, cascade='all, delete-orphan')
+    
+    def __repr__(self):
+        return f'<Recipe {self.title}>'
 
 class Ingredient(db.Model):
+    __tablename__ = 'ingredients'
+    
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
-    category = db.Column(db.String(100))
+    name = db.Column(db.String(100), nullable=False, unique=True)
+    category = db.Column(db.String(50))
     unit = db.Column(db.String(20))
     avg_price = db.Column(db.Float)
-    price_entries = db.relationship("PriceEntry", backref="ingredient", lazy=True)
+    
+    recipes = db.relationship('RecipeIngredient', backref='ingredient', lazy=True)
+    prices = db.relationship('PriceEntry', backref='ingredient', lazy=True, cascade='all, delete-orphan')
+    
+    def __repr__(self):
+        return f'<Ingredient {self.name}>'
 
 class RecipeIngredient(db.Model):
+    __tablename__ = 'recipe_ingredients'
+    
     id = db.Column(db.Integer, primary_key=True)
-    recipe_id = db.Column(db.Integer, db.ForeignKey("recipe.id"), nullable=False)
-    ingredient_id = db.Column(db.Integer, db.ForeignKey("ingredient.id"), nullable=False)
-    quantity = db.Column(db.Float)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'), nullable=False)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'), nullable=False)
+    quantity = db.Column(db.Float, nullable=False)
+    notes = db.Column(db.String(100))
+    
+    def __repr__(self):
+        return f'<RecipeIngredient {self.id}>'
 
 class Market(db.Model):
+    __tablename__ = 'markets'
+    
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
-    location = db.Column(db.String(200))
-    contact = db.Column(db.String(50))
+    name = db.Column(db.String(100), nullable=False)
+    location = db.Column(db.String(255), nullable=False)
+    contact = db.Column(db.String(100))
     operating_hours = db.Column(db.String(100))
-    price_entries = db.relationship("PriceEntry", backref="market", lazy=True)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    
+    prices = db.relationship('PriceEntry', backref='market', lazy=True, cascade='all, delete-orphan')
+    
+    def __repr__(self):
+        return f'<Market {self.name}>'
 
 class PriceEntry(db.Model):
+    __tablename__ = 'price_entries'
+    
     id = db.Column(db.Integer, primary_key=True)
-    ingredient_id = db.Column(db.Integer, db.ForeignKey("ingredient.id"), nullable=False)
-    market_id = db.Column(db.Integer, db.ForeignKey("market.id"), nullable=False)
-    price = db.Column(db.Float)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'), nullable=False)
+    market_id = db.Column(db.Integer, db.ForeignKey('markets.id'), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    date_recorded = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<PriceEntry {self.id}>'
 
 class Favorite(db.Model):
+    __tablename__ = 'favorites'
+    
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    recipe_id = db.Column(db.Integer, db.ForeignKey("recipe.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'recipe_id', name='unique_user_recipe'),
+    )
+    
+    def __repr__(self):
+        return f'<Favorite {self.id}>'
