@@ -1,0 +1,259 @@
+.recipe-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #4a6fa5;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px 0;
+  margin-bottom: 15px;
+}
+
+.back-button:hover {
+  color: #2c5282;
+}
+
+.recipe-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.recipe-title {
+  font-size: 2.5rem;
+  color: #2d3748;
+  margin-bottom: 10px;
+}
+
+.recipe-author {
+  font-size: 1.1rem;
+  color: #718096;
+  font-style: italic;
+}
+
+.recipe-image-container {
+  margin-bottom: 30px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-image-placeholder {
+  width: 100%;
+  height: 450px;
+  background: linear-gradient(45deg, #ffecd2, #fcb69f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #718096;
+  font-size: 1.2rem;
+}
+
+.recipe-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.info-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.info-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-label {
+  font-size: 0.9rem;
+  color: #718096;
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+
+.info-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.like-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.like-button:hover {
+  background-color: #edf2f7;
+}
+
+.like-button.liked {
+  background-color: #fff5f5;
+  color: #e53e3e;
+  border-color: #fed7d7;
+}
+
+.heart-icon {
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+
+.section {
+  margin-bottom: 35px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #2d3748;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.ingredients-list {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.ingredient-item {
+  display: flex;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.ingredient-item:last-child {
+  border-bottom: none;
+}
+
+.ingredient-quantity {
+  font-weight: 600;
+  color: #4a6fa5;
+  min-width: 100px;
+}
+
+.ingredient-name {
+  flex-grow: 1;
+}
+
+.ingredient-price {
+  color: #38a169;
+  font-weight: 600;
+  min-width: 80px;
+  text-align: right;
+}
+
+.instructions-container {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.instruction-step {
+  display: flex;
+  margin-bottom: 25px;
+}
+
+.instruction-step:last-child {
+  margin-bottom: 0;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  background-color: #4a6fa5;
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.step-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #4a5568;
+}
+
+.cost-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #fffaf0, #fff5eb);
+  border-left: 5px solid #ed8936;
+  border-radius: 0 8px 8px 0;
+  padding: 20px 25px;
+  margin: 40px 0;
+}
+
+.cost-info {
+  flex-grow: 1;
+}
+
+.cost-title {
+  font-size: 1.4rem;
+  color: #2d3748;
+  margin-bottom: 5px;
+}
+
+.cost-description {
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+.cost-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #dd6b20;
+  margin-left: 20px;
+}
+
+.find-ingredients-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: linear-gradient(to right, #38a169, #48bb78);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 18px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(56, 161, 105, 0.3);
+}
+
+.find-ingredients-button:hover {
+  background: linear-gradient(to right, #2f855a, #38a169);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(56, 161, 105, 0.4);
+}
+
