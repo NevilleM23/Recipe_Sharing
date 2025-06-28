@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RecipeService from '../services/RecipeService';
-import './CreateRecipePage.css';
+import './CreateRecipes.css';
 
 const CreateRecipePage = () => {
   const navigate = useNavigate();

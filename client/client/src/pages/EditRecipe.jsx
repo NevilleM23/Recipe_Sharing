@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import RecipeService from '../services/RecipeService';
-import './EditRecipePage.css';
+import './EditRecipe.css';
 
 const EditRecipePage = () => {
   const { id } = useParams();
