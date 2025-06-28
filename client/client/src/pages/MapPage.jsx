@@ -1,4 +1,3 @@
-// src/pages/MapPage.js
 import React, { useState, useEffect } from 'react';
 import './MapPage.css';
 

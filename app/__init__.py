@@ -19,6 +19,8 @@ def create_app(config_class=Config):
     jwt.init_app(app)
     CORS(app)
     
+    from app.models import User, Recipe, Ingredient, RecipeIngredient, Market, PriceEntry, Favorite
+    
     # Register blueprints
     from app.routes.auth_routes import auth_bp
     from app.routes.recipe_routes import recipes_bp

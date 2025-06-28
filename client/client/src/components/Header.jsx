@@ -1,7 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom"; 
+import { useAuth } from "../context/AuthContext"; 
 import './Header.css'
 
 function Header() {
+    const { currentUser, logout } = useAuth(); 
+
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <header className="app-header">
       <div className="header-container">  
