@@ -1,103 +1,115 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import './RecipePage.css';
 
 const RecipePage = () => {
-  const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(124);
+  const { id } = useParams();
+  const [recipe, setRecipe] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const { currentUser } = useAuth();
 
-  const recipe = {
-    id: 1,
-    title: "Classic Spaghetti Carbonara",
-    photo: "https://images.unsplash.com/photo-1612870635447-de7a255d4256",
-    cook_time: 30,
-    difficulty: "Medium",
-    budget_rating: "Medium",
-    ingredients: [
-      "400g spaghetti",
-      "200g pancetta or guanciale, diced",
-      "4 large eggs",
-      "50g pecorino cheese, grated",
-      "50g parmesan, grated",
-      "Freshly ground black pepper",
-      "Salt"
-    ],
-    instructions: [
-      "Bring a large pot of salted water to boil and cook spaghetti according to package instructions.",
-      "While pasta cooks, fry pancetta in a large pan until crispy.",
-      "In a bowl, whisk eggs and mix in grated cheeses and plenty of black pepper.",
-      "Drain pasta, reserving some cooking water, and immediately add to the pancetta.",
-      "Remove pan from heat and quickly stir in egg mixture, creating a creamy sauce.",
-      "Serve immediately with extra grated cheese and black pepper."
-    ],
-    author: "Maria Rossi",
-    date_posted: "2023-05-15"
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      try {
+        const recipeData = await RecipeService.getRecipeById(id);
+        setRecipe(recipeData);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to load recipe: ' + err.message);
+        setLoading(false);
+      }
+    };
+    
+    fetchRecipe();
+  }, [id]);
+
+  const handleLike = async () => {
+    if (!currentUser) return;
+    
+    try {
+      const updatedRecipe = await RecipeService.toggleFavorite(id);
+      setRecipe(updatedRecipe);
+    } catch (err) {
+      console.error('Failed to toggle favorite:', err);
+    }
   };
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    setLikes(isLiked ? likes - 1 : likes + 1);
-  };
+  if (loading) {
+    }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
+
+  if (!recipe) {
+    return <div className="error">Recipe not found</div>;
+  }
+
+  const isLiked = currentUser && recipe.favorites && 
+    recipe.favorites.some(fav => fav.user_id === currentUser.id)
 
   return (
-    <div className="recipe-page">
+<div className="recipe-page">
       <div className="recipe-header">
-        <h1>{recipe.title}</h1>
-        <div className="recipe-meta">
-          <div className="meta-item">
-            <span className="meta-label">Prep Time:</span>
-            <span>{recipe.cook_time} minutes</span>
+        <div className="recipe-image-container">
+          <img 
+            src={recipe.image_url || 'https://via.placeholder.com/600x400?text=No+Image'} 
+            alt={recipe.title} 
+            className="recipe-main-image"
+          />
+        </div>
+        <div className="recipe-info">
+          <h1>{recipe.title}</h1>
+          <div className="recipe-meta">
+            <div className="meta-item">
+              <span className="meta-label">Prep Time:</span>
+              <span>{recipe.cook_time} minutes</span>
+            </div>
+            <div className="meta-item">
+              <span className="meta-label">Difficulty:</span>
+              <span className="capitalize">{recipe.difficulty}</span>
+            </div>
+            <div className="meta-item">
+              <span className="meta-label">Budget:</span>
+              <span className="capitalize">{recipe.budget_rating}</span>
+            </div>
           </div>
-          <div className="meta-item">
-            <span className="meta-label">Difficulty:</span>
-            <span>{recipe.difficulty}</span>
-          </div>
-          <div className="meta-item">
-            <span className="meta-label">Budget:</span>
-            <span>{recipe.budget_rating}</span>
+          <p className="recipe-description">{recipe.description}</p>
+          <div className="like-container">
+            <button 
+              onClick={handleLike}
+              className={`like-btn ${isLiked ? 'liked' : ''}`}
+              disabled={!currentUser}
+            >
+              <span className="heart-icon">❤</span>
+              <span>{recipe.favorites_count || 0}</span>
+            </button>
           </div>
         </div>
-        
-        <button 
-          onClick={handleLike}
-          className={`like-btn ${isLiked ? 'liked' : ''}`}
-        >
-          <span className="heart-icon">❤</span>
-          <span>{likes}</span>
-        </button>
       </div>
       
-      <div className="recipe-image-container">
-        <img 
-          src={recipe.photo} 
-          alt={recipe.title} 
-          className="recipe-main-image"
-        />
-      </div>
-      
-      <div className="recipe-details">
-        <div className="recipe-author">
-          Posted by {recipe.author} on {new Date(recipe.date_posted).toLocaleDateString()}
-        </div>
-        
-        <div className="recipe-section">
+      <div className="recipe-content">
+        <div className="ingredients-section">
           <h2>Ingredients</h2>
-          <ul className="ingredients-list">
-            {recipe.ingredients.map((ingredient, index) => (
-              <li key={index}>{ingredient}</li>
+          <ul>
+            {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
+              <li key={index}>
+                {ingredient.quantity} {ingredient.unit} {ingredient.name}
+                {ingredient.notes && ` (${ingredient.notes})`}
+              </li>
             ))}
           </ul>
         </div>
         
-        <div className="recipe-section">
+        <div className="instructions-section">
           <h2>Instructions</h2>
-          <ol className="instructions-list">
-            {recipe.instructions.map((instruction, index) => (
-              <li key={index}>{instruction}</li>
+          <ol>
+            {recipe.steps && recipe.steps.split('\n').map((step, index) => (
+              <li key={index}>{step}</li>
             ))}
           </ol>
-        </div> 
-
-        
+        </div>
       </div>
     </div>
   );
