@@ -9,12 +9,10 @@
   color: inherit;
   height: 100%;
   position: relative;
-}
 
 .recipe-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
 
 .card-image {
   height: 200px;
@@ -48,9 +46,7 @@
   color: #2d3748;
   height: 60px;
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  display:flexbox;
 }
 
 .recipe-meta {
@@ -121,9 +117,7 @@
 
 .recipe-card:hover .view-recipe {
   text-decoration: underline;
-}
 
-/* Favorite indicator */
 .favorite-badge {
   position: absolute;
   top: 15px;
@@ -135,4 +129,3 @@
   font-size: 0.8rem;
   font-weight: 600;
   z-index: 10;
-}

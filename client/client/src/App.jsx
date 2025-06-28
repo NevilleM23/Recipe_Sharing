@@ -11,7 +11,6 @@ import EditRecipePage from './pages/EditRecipePage';
 import FavoritesPage from './pages/FavoritesPage';
 import MyRecipesPage from './pages/MyRecipesPage';
 import Header from './components/Header';
-import './App.css'
 
 const ProtectedRoute = ({ children }) => {
   const { currentUser } = useAuth();
