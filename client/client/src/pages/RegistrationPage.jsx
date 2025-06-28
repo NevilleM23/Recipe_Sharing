@@ -33,12 +33,13 @@ const RegisterPage = () => {
   };
 
   return (
+  <div className="register-page">
     <div className="register-container">
+           <h2>Create an Account</h2>
       <div className="register-form">
-        <h2>Create an Account</h2>
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="register-form-group">
             <label>Full Name</label>
             <input
               type="text"
@@ -47,7 +48,7 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="register-form-group">
             <label>Email</label>
             <input
               type="email"
@@ -56,7 +57,7 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="register-form-group">
             <label>Password</label>
             <input
               type="password"
@@ -65,7 +66,7 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="register-form-group">
             <label>Confirm Password</label>
             <input
               type="password"
@@ -87,6 +88,7 @@ const RegisterPage = () => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
 

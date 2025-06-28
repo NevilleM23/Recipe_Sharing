@@ -1,0 +1,209 @@
+/* General Layout */
+.map-page {
+  padding: 40px 20px;
+  background-color: #f8fafc;
+  color: #1a202c;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100wv;
+} 
+
+main.map-page {
+  flex-grow: 1;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.page-header p {
+  font-size: 1.2rem;
+  color: #4a5568;
+}
+
+/* Map Search */
+.map-search {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.map-search form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.map-search input {
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  width: 250px;
+}
+
+.map-search button {
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.map-search button:hover {
+  background-color: #e55d00;
+}
+
+/* Map Content */
+.map-content {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.map-visual {
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+  height: 400px;
+  background-color: #edf2f7;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.map-placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.map-grid .grid-line {
+  position: absolute;
+  background-color: #cbd5e0;
+}
+
+.map-grid .grid-line:nth-child(even) {
+  height: 100%;
+  width: 1px;
+  left: calc(var(--i) * 20%);
+}
+
+.map-grid .grid-line:nth-child(odd) {
+  width: 100%;
+  height: 1px;
+  top: calc(var(--i) * 20%);
+}
+
+.map-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.marker-pin {
+  width: 12px;
+  height: 12px;
+  background-color: #ff6600;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.marker-label {
+  margin-top: 5px;
+  font-size: 0.75rem;
+  background-color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.map-marker.active .marker-pin {
+  background-color: #e55d00;
+}
+
+/* Market Details */
+.market-details {
+  flex: 1;
+  min-width: 300px;
+}
+
+.market-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.market-header h2,
+.market-header h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.market-location {
+  font-size: 1rem;
+  color: #718096;
+  margin-bottom: 10px;
+}
+
+.market-info .info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 0.95rem;
+}
+
+.market-actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.directions-btn {
+  background-color: #ff6600;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.directions-btn:hover {
+  background-color: #e55d00;
+}
+
+/* Markets List */
+.markets-list {
+  margin-top: 40px;
+}
+
+.markets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.market-card.selected {
+  border: 2px solid #ff6600;
+}
+
+.market-address,
+.market-hours {
+  font-size: 0.9rem;
+  margin-top: 8px;
+  color: #4a5568;
+}

@@ -1,11 +1,11 @@
 :root {
   --primary-color: #ff6600;
   --primary-dark: #e55d00;
-  --secondary-color: #2d3748;
+  --secondary-color: #010102;
   --light-gray: #f8fafc;
   --medium-gray: #e2e8f0;
-  --dark-gray: #4a5568;
-  --white: #ffffff;
+  --dark-gray: #565c68;
+  --white: #c76666;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   --border-radius: 12px;
 }
@@ -160,7 +160,7 @@ button {
   position: relative;
   width: 100%;
   margin-top: auto;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -2px 10px rgba(189, 185, 185, 0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
