@@ -1,10 +1,53 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import './ProfilePage.css';
+import RecipeCard from '../components/RecipeCard';
+import RecipeService from '../services/RecipeService';
+import './UserProfile.css';
 
 const ProfilePage = () => {
   const { currentUser, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('info');
+  const [recipes, setRecipes] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!currentUser) return;
+      
+      setLoading(true);
+      setError('');
+      
+      try {
+        if (activeTab === 'recipes') {
+          // Fetch user's recipes
+          const userRecipes = await RecipeService.getUserRecipes(currentUser.id);
+          setRecipes(userRecipes);
+        } else if (activeTab === 'favorites') {
+          // Fetch user's favorites
+          const favRecipes = await RecipeService.getFavorites();
+          setFavorites(favRecipes);
+        }
+        
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to load data: ' + err.message);
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, [currentUser, activeTab]);
+
+  const handleUnlike = async (recipeId) => {
+    try {
+      await RecipeService.toggleFavorite(recipeId);
+      setFavorites(favorites.filter(recipe => recipe.id !== recipeId));
+    } catch (err) {
+      console.error('Failed to remove favorite:', err);
+    }
+  };
   
   if (!currentUser) {
     return <div>Loading profile...</div>;
@@ -22,9 +65,13 @@ const ProfilePage = () => {
           <h1>{currentUser.name}</h1>
           <p className="profile-email">{currentUser.email}</p>
           <div className="profile-meta">
+        <div className="meta-item">
+              <span className="meta-value">Recipes created</span>
+              <span>{recipes.length}</span>
+            </div>
             <div className="meta-item">
-              <span className="meta-value">Member since</span>
-              <span>{new Date(currentUser.joined).toLocaleDateString()}</span>
+              <span className="meta-value">Favorites saved</span>
+              <span>{favorites.length}</span>
             </div>
           </div>
         </div>
@@ -32,23 +79,77 @@ const ProfilePage = () => {
       
       <div className="profile-tabs">
         <button 
-          className={`tab-btn ${activeTab === 'info' ? 'active' : ''}`}
-          onClick={() => setActiveTab('info')}
+          className={`tab-btn ${activeTab === 'recipes' ? 'active' : ''}`}
+          onClick={() => setActiveTab('recipes')}
         >
-          Account Info
+          My Recipes
         </button>
         <button 
-          className={`tab-btn ${activeTab === 'password' ? 'active' : ''}`}
-          onClick={() => setActiveTab('password')}
+          className={`tab-btn ${activeTab === 'favorites' ? 'active' : ''}`}
+          onClick={() => setActiveTab('favorites')}
         >
-          Change Password
+          My Favorites
+        </button>
+        <button 
+          className={`tab-btn ${activeTab === 'settings' ? 'active' : ''}`}
+          onClick={() => setActiveTab('settings')}
+        >
+          Account Settings
         </button>
       </div>
       
       <div className="tab-content">
-        {activeTab === 'info' && (
-          <div className="info-section">
-            <form className="profile-form">
+        {activeTab === 'recipes' && (
+          <div className="recipes-section">
+            {loading ? (
+              <div className="loading">Loading your recipes...</div>
+            ) : error ? (
+              <div className="error">{error}</div>
+            ) : recipes.length === 0 ? (
+              <div className="empty-state">
+                <p>You haven't created any recipes yet.</p>
+                <a href="/create-recipe" className="create-link">
+                  Create your first recipe
+                </a>
+              </div>
+            ) : (
+              <div className="recipes-grid">
+                {recipes.map(recipe => (
+                  <RecipeCard key={recipe.id} recipe={recipe} />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        
+        {activeTab === 'favorites' && (
+          <div className="favorites-section">
+            {loading ? (
+              <div className="loading">Loading your favorites...</div>
+            ) : error ? (
+              <div className="error">{error}</div>
+            ) : favorites.length === 0 ? (
+              <div className="empty-state">
+                <p>You haven't added any recipes to your favorites yet.</p>
+                <p>Browse recipes and click the ❤️ icon to save them here.</p>
+              </div>
+            ) : (
+              <div className="favorites-grid">
+                {favorites.map(recipe => (
+                  <RecipeCard 
+                    key={recipe.id} 
+                    recipe={recipe} 
+                    onLike={() => handleUnlike(recipe.id)} 
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        
+        {activeTab === 'settings' && (
+          <div className="settings-section">
+            <form className="settings-form">
               <div className="form-group">
                 <label>Full Name</label>
                 <input
@@ -71,46 +172,18 @@ const ProfilePage = () => {
                   defaultValue={currentUser.phone || ''}
                 />
               </div>
-              <button type="submit" className="save-btn">
-                Save Changes
-              </button>
+              
+              <div className="form-row">
+                <button type="submit" className="save-btn">
+                  Save Changes
+                </button>
+                <button className="logout-btn" onClick={logout}>
+                  Logout
+                </button>
+              </div>
             </form>
           </div>
         )}
-        
-        {activeTab === 'password' && (
-          <div className="password-section">
-            <form className="profile-form">
-              <div className="form-group">
-                <label>Current Password</label>
-                <input
-                  type="password"
-                />
-              </div>
-              <div className="form-group">
-                <label>New Password</label>
-                <input
-                  type="password"
-                />
-              </div>
-              <div className="form-group">
-                <label>Confirm New Password</label>
-                <input
-                  type="password"
-                />
-              </div>
-              <button type="submit" className="save-btn">
-                Change Password
-              </button>
-            </form>
-          </div>
-        )}
-      </div>
-      
-      <div className="logout-section">
-        <button className="logout-btn" onClick={logout}>
-          Logout
-        </button>
       </div>
     </div>
   );
