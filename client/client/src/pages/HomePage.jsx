@@ -1,9 +1,72 @@
 import React, { useState } from 'react';
-import RecipeCard from '../components/RecipeCard/RecipeCard';
-import SearchBar from '../components/SearchBar/SearchBar';
+import RecipeCard from '../components/RecipeCard';
+import SearchBar from '../components/Searchbar'
 import './HomePage.css';
 
 const HomePage = () => {
+ const [recipes, setRecipes] = useState([
+    {
+      id: 1,
+      title: "Classic Spaghetti Carbonara",
+      photo: "carbonara.jpg",
+      cook_time: 30,
+      difficulty: "Medium",
+      budget_rating: "Medium",
+      likes: 124,
+      isLiked: false
+    },
+    {
+      id: 2,
+      title: "Vegetable Stir Fry",
+      photo: "stirfry.jpg",
+      cook_time: 20,
+      difficulty: "Easy",
+      budget_rating: "Low",
+      likes: 89,
+      isLiked: true
+    },
+    {
+      id: 3,
+      title: "Chocolate Chip Cookies",
+      photo: "cookies.jpg",
+      cook_time: 25,
+      difficulty: "Easy",
+      budget_rating: "Low",
+      likes: 215,
+      isLiked: false
+    },
+    {
+      id: 4,
+      title: "Beef Bourguignon",
+      photo: "beef.jpg",
+      cook_time: 180,
+      difficulty: "Hard",
+      budget_rating: "High",
+      likes: 67,
+      isLiked: false
+    },
+    {
+      id: 5,
+      title: "Greek Salad",
+      photo: "salad.jpg",
+      cook_time: 15,
+      difficulty: "Easy",
+      budget_rating: "Low",
+      likes: 142,
+      isLiked: false
+    },
+    {
+      id: 6,
+      title: "Chicken Curry",
+      photo: "curry.jpg",
+      cook_time: 45,
+      difficulty: "Medium",
+      budget_rating: "Medium",
+      likes: 98,
+      isLiked: false
+    }
+  ]);
+  
   const [filteredRecipes, setFilteredRecipes] = useState(recipes);
   
   const handleSearch = (searchTerm, filters) => {
