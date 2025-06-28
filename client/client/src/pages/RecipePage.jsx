@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
+import { useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import RecipeService from '../services/RecipeService';
 import './RecipePage.css';
 
 const RecipePage = () => {

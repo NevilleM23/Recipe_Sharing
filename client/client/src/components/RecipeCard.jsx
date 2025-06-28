@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import './RecipeCard.css'
 
 const RecipeCard = ({ recipe, onLike }) => {
+  const { currentUser } = useAuth();
+
   const handleLike = (e) => {
     e.preventDefault();
     if (onLike) onLike(recipe.id);
@@ -44,13 +46,13 @@ const RecipeCard = ({ recipe, onLike }) => {
         </div>
         
         <div className="card-footer">
-          <button 
+          {currentUser && ( <button 
             onClick={handleLike}
             className={`like-btn ${recipe.isLiked ? 'liked' : ''}`}
           >
             <span className="heart-icon">❤</span>
             <span>{recipe.likes}</span>
-          </button>
+          </button>)}
           
           <div className="view-recipe">
             View Recipe →
