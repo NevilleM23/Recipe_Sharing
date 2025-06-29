@@ -72,4 +72,5 @@ def get_current_user():
         'name': user.name,
         'email': user.email,
         'phone': user.phone
-    }), 200
+    }), 200  
+

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.models import Market
 
-markets_bp = Blueprint('markets', __name__, url_prefix='/api/markets')
+markets_bp = Blueprint('markets', __name__, url_prefix='/api/markets/')
 
 @markets_bp.route('/', methods=['GET'])
 def get_markets():

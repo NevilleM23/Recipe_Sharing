@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
@@ -10,10 +9,9 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
- 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 
   useEffect(() => {
@@ -144,7 +142,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('user');
     setCurrentUser(null);
-    navigate('/login');
+    window.location.href = '/login';
   };
 
   const value = {

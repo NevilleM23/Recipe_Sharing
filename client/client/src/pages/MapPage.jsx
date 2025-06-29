@@ -1,4 +1,3 @@
-// src/pages/MapPage.js
 import React, { useState, useEffect } from 'react';
 import './MapPage.css';
 
@@ -12,7 +11,7 @@ const MapPage = () => {
   useEffect(() => {
     const fetchMarkets = async () => {
       try {
-        let url = '/api/markets';
+        let url = 'http://localhost:5000/api/markets/';
         if (searchLocation) {
           url += `?near=${encodeURIComponent(searchLocation)}`;
         }

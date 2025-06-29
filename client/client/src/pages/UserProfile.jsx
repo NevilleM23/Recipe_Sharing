@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useAuth } from '../context/AuthContext';
 import RecipeCard from '../components/RecipeCard';
 import RecipeService from '../services/RecipeService';
@@ -20,15 +20,13 @@ const ProfilePage = () => {
       setError('');
       
       try {
-        if (activeTab === 'recipes') {
-          // Fetch user's recipes
-          const userRecipes = await RecipeService.getUserRecipes(currentUser.id);
-          setRecipes(userRecipes);
-        } else if (activeTab === 'favorites') {
-          // Fetch user's favorites
-          const favRecipes = await RecipeService.getFavorites();
-          setFavorites(favRecipes);
-        }
+      if (activeTab === 'recipes') {
+        const userRecipes = await RecipeService.getUserRecipes(currentUser.id, currentUser.token);
+        setRecipes(userRecipes);
+      } else if (activeTab === 'favorites') {
+        const favRecipes = await RecipeService.getFavorites(currentUser.token);
+        setFavorites(favRecipes);
+      }
         
         setLoading(false);
       } catch (err) {
@@ -42,7 +40,7 @@ const ProfilePage = () => {
 
   const handleUnlike = async (recipeId) => {
     try {
-      await RecipeService.toggleFavorite(recipeId);
+      await RecipeService.toggleFavorite(recipeId, currentUser.token);
       setFavorites(favorites.filter(recipe => recipe.id !== recipeId));
     } catch (err) {
       console.error('Failed to remove favorite:', err);
