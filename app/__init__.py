@@ -20,15 +20,13 @@ def create_app(config_class=Config):
 
     
      # CORS setup to allow frontend at localhost:5173
-    CORS(app, resources={
-        r"/api/*": {
-            "origins": "http://localhost:5173",
-            "supports_credentials": True,
-            "allow_headers": ["Content-Type", "Authorization"],
-            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-        }
-    })
-    
+    CORS(
+    app,
+    resources={r"/api/*": {"origins": ["http://localhost:5173", "http://127.0.0.1:5173"]}},
+    supports_credentials=True,
+    allow_headers=["Content-Type", "Authorization"],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+)
     from app.models import User, Recipe, Ingredient, RecipeIngredient, Market, PriceEntry, Favorite
     
     # Register blueprints
@@ -41,7 +39,7 @@ def create_app(config_class=Config):
     app.register_blueprint(recipes_bp)
     app.register_blueprint(ingredients_bp)
     app.register_blueprint(markets_bp)
-    
+
     return app
 
 app = create_app()

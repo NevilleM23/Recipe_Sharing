@@ -23,7 +23,6 @@ const ProfilePage = () => {
       if (activeTab === 'recipes') {
         const userRecipes = await RecipeService.getUserRecipes(currentUser.id, currentUser.token);
         setRecipes(userRecipes);
-
       } else if (activeTab === 'favorites') {
         const favRecipes = await RecipeService.getFavorites(currentUser.token);
         setFavorites(favRecipes);
@@ -41,7 +40,7 @@ const ProfilePage = () => {
 
   const handleUnlike = async (recipeId) => {
     try {
-      await RecipeService.toggleFavorite(recipeId);
+      await RecipeService.toggleFavorite(recipeId, currentUser.token);
       setFavorites(favorites.filter(recipe => recipe.id !== recipeId));
     } catch (err) {
       console.error('Failed to remove favorite:', err);

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import RecipeService from '../services/RecipeService';
+import { useAuth } from '../context/AuthContext'; 
+import RecipeService from '../context/RecipeService';
 import './CreateRecipes.css';
 
 const CreateRecipePage = () => {
   const navigate = useNavigate();
+  const { currentUser } = useAuth(); 
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -44,18 +46,18 @@ const CreateRecipePage = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    
-    try {
-      await RecipeService.createRecipe(formData);
-      navigate('/my-recipes');
-    } catch (err) {
-      setError('Failed to create recipe: ' + err.message);
-      setLoading(false);
-    }
-  };
+      e.preventDefault();
+      setLoading(true);
+      setError('');
+  
+  try {
+    await RecipeService.createRecipe(formData, currentUser.token);
+    navigate('/my-recipes');
+  } catch (err) {
+    setError('Failed to create recipe: ' + err.message);
+    setLoading(false);
+  }
+};
 
   return (
     <div className="create-recipe-page">

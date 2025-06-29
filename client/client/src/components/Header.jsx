@@ -10,8 +10,11 @@ function Header() {
     logout();
   };
   return (
-<header className="app-header">
+    <header className="app-header">
       <div className="header-container">
+        <div className="logo">
+          <h1>Recipe Sharing</h1>
+        </div>
         <nav className="main-nav">
           <ul>
             <li><Link to="/">Home</Link></li>

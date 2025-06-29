@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-const API_URL = `${API_BASE}/recipes`; // Full base URL including /api/recipes
+const API_URL = `${API_BASE}/recipes`; // Fixed: now includes /api/recipes
 
 const RecipeService = {
   getAllRecipes: async () => {
@@ -10,8 +10,8 @@ const RecipeService = {
   },
 
   getRecipeById: async (id) => {
-    const response = await axios.get(`${API_URL}/${id}`, { 
-      withCredentials: true 
+    const response = await axios.get(`${API_URL}/${id}`, {
+      withCredentials: true
     });
     return response.data;
   },
@@ -36,7 +36,6 @@ const RecipeService = {
     return response.data;
   },
 
-  // Add these methods to match your backend routes
   getUserRecipes: async (userId, token) => {
     const response = await axios.get(`${API_BASE}/api/users/${userId}/recipes`, {
       headers: {
