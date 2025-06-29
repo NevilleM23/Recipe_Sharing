@@ -38,6 +38,7 @@ const RecipePage = () => {
   };
 
   if (loading) {
+      return <div className="loading">Loading recipe...</div>;
     }
 
   if (error) {

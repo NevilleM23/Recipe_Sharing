@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useAuth } from '../context/AuthContext';
 import RecipeCard from '../components/RecipeCard';
 import RecipeService from '../services/RecipeService';

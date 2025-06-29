@@ -11,6 +11,7 @@ import EditRecipePage from './pages/EditRecipe';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CreateRecipe from './pages/CreateRecipes';
+import RecipeListPage from './pages/RecipeListPage'
 import './App.css'
 
 const ProtectedRoute = ({ children }) => {
@@ -29,6 +30,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/recipe/:id" element={<RecipePage />} />
+              <Route path="/recipes" element={<RecipeListPage />} />
               <Route path="/map" element={<MapPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegistrationPage />} />
@@ -44,7 +46,7 @@ function App() {
                 <EditRecipePage />
               </ProtectedRoute>
               } />
-              <Route path="/edit-recipe/:id" element=
+              <Route path="/create-recipe" element=
               {<ProtectedRoute>
                 <CreateRecipe />
               </ProtectedRoute>

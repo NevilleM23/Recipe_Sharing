@@ -196,7 +196,7 @@ const CreateRecipePage = () => {
             className="add-ingredient"
             onClick={addIngredient}
           >
-            + Add Ingredient
+             Add Ingredient
           </button>
         </div>
         
