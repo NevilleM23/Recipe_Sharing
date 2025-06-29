@@ -17,7 +17,17 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
-    CORS(app)
+
+    
+     # CORS setup to allow frontend at localhost:5173
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": "http://localhost:5173",
+            "supports_credentials": True,
+            "allow_headers": ["Content-Type", "Authorization"],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+        }
+    })
     
     from app.models import User, Recipe, Ingredient, RecipeIngredient, Market, PriceEntry, Favorite
     
@@ -33,3 +43,5 @@ def create_app(config_class=Config):
     app.register_blueprint(markets_bp)
     
     return app
+
+app = create_app()

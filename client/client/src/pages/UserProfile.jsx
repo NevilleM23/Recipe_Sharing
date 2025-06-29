@@ -20,15 +20,14 @@ const ProfilePage = () => {
       setError('');
       
       try {
-        if (activeTab === 'recipes') {
-          // Fetch user's recipes
-          const userRecipes = await RecipeService.getUserRecipes(currentUser.id);
-          setRecipes(userRecipes);
-        } else if (activeTab === 'favorites') {
-          // Fetch user's favorites
-          const favRecipes = await RecipeService.getFavorites();
-          setFavorites(favRecipes);
-        }
+      if (activeTab === 'recipes') {
+        const userRecipes = await RecipeService.getUserRecipes(currentUser.id, currentUser.token);
+        setRecipes(userRecipes);
+
+      } else if (activeTab === 'favorites') {
+        const favRecipes = await RecipeService.getFavorites(currentUser.token);
+        setFavorites(favRecipes);
+      }
         
         setLoading(false);
       } catch (err) {

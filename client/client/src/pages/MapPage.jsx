@@ -11,7 +11,7 @@ const MapPage = () => {
   useEffect(() => {
     const fetchMarkets = async () => {
       try {
-        let url = '/api/markets/';
+        let url = 'http://localhost:5000/api/markets/';
         if (searchLocation) {
           url += `?near=${encodeURIComponent(searchLocation)}`;
         }
