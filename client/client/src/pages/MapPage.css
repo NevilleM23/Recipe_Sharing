@@ -1,15 +1,17 @@
-/* General Layout */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .map-page {
-  padding: 40px 20px;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
   background-color: #f8fafc;
   color: #1a202c;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  width: 100wv;
 } 
-
-main.map-page {
-  flex-grow: 1;
-}
 
 .page-header {
   text-align: center;
@@ -26,7 +28,6 @@ main.map-page {
   color: #4a5568;
 }
 
-/* Map Search */
 .map-search {
   margin-bottom: 20px;
   text-align: center;
@@ -60,7 +61,6 @@ main.map-page {
   background-color: #e55d00;
 }
 
-/* Map Content */
 .map-content {
   display: flex;
   flex-direction: row;
