@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './MapPage.css';
 
+const API_BASE = import.meta.env.VITE_API_URL || 'https://recipe-sharing-x9px.onrender.com/api';
+
 const MapPage = () => {
   const [markets, setMarkets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +13,7 @@ const MapPage = () => {
   useEffect(() => {
     const fetchMarkets = async () => {
       try {
-        let url = 'http://localhost:5000/api/markets/';
+        let url = `${API_BASE}/markets/`;
         if (searchLocation) {
           url += `?near=${encodeURIComponent(searchLocation)}`;
         }
