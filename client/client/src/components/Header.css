@@ -57,3 +57,20 @@
   position: absolute;
   bottom: 0;
 }
+
+.logout-btn {
+  background: #fff;
+  color: #ff6600;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin-left: 12px;
+}
+
+.logout-btn:hover {
+  background: #ff6600;
+  color: #fff;
+}

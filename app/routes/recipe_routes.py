@@ -24,12 +24,16 @@ def get_recipes():
         'difficulty': recipe.difficulty,
         'budget_rating': recipe.budget_rating,
         'image_url': recipe.image_url,
+        'photo': recipe.image_url,  # for RecipeCard compatibility
+        'likes': len(recipe.favorites),
+        'favorites_count': len(recipe.favorites),
         'author': {
-            'id': recipe.author.id,
-            'name': recipe.author.name
-        }
+            'id': recipe.author.id if recipe.author else None,
+            'name': recipe.author.name if recipe.author else 'Unknown'
+        } if hasattr(recipe, 'author') and recipe.author else None
     } for recipe in recipes]), 200
 
+@recipes_bp.route('', methods=['POST'])
 @recipes_bp.route('/', methods=['POST'])
 @jwt_required()
 @validate_json({
@@ -89,12 +93,16 @@ def get_recipe(recipe_id):
         'difficulty': recipe.difficulty,
         'budget_rating': recipe.budget_rating,
         'image_url': recipe.image_url,
+        'photo': recipe.image_url,  # for RecipeCard compatibility
+        'likes': len(recipe.favorites),
+        'favorites_count': len(recipe.favorites),
         'created_at': recipe.created_at.isoformat(),
         'author': {
-            'id': recipe.author.id,
-            'name': recipe.author.name
+            'id': recipe.author.id if recipe.author else None,
+            'name': recipe.author.name if recipe.author else "Unknown"
         },
-        'ingredients': ingredients
+        'ingredients': ingredients,
+        'favorites': [{ 'user_id': fav.user_id } for fav in recipe.favorites ]
     }), 200
 
 @recipes_bp.route('/<int:recipe_id>/favorite', methods=['POST'])
@@ -124,3 +132,18 @@ def get_favorites():
             'name': fav.recipe.author.name
         }
     } for fav in favorites]), 200
+
+@recipes_bp.route('/user/<int:user_id>', methods=['GET'])
+@jwt_required()
+def get_user_recipes(user_id):
+    user_recipes = Recipe.query.filter_by(user_id=user_id).all()
+    
+    return jsonify([{
+        'id': r.id,
+        'title': r.title,
+        'description': r.description,
+        'cook_time': r.cook_time,
+        'difficulty': r.difficulty,
+        'budget_rating': r.budget_rating,
+        'image_url': r.image_url
+    } for r in user_recipes]), 200

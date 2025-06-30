@@ -17,9 +17,8 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     const user = JSON.parse(localStorage.getItem('user'));
-    
     if (token && user) {
-      setCurrentUser(user);
+      setCurrentUser({ ...user, token });
     }
     setLoading(false);
   }, []);
@@ -43,7 +42,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem('access_token', data.access_token);
       localStorage.setItem('refresh_token', data.refresh_token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      setCurrentUser(data.user);
+      setCurrentUser({ ...data.user, token: data.access_token });
       
       return data.user;
     } catch (error) {
@@ -70,7 +69,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem('access_token', data.access_token);
       localStorage.setItem('refresh_token', data.refresh_token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      setCurrentUser(data.user);
+      setCurrentUser({ ...data.user, token: data.access_token });
       
       return data.user;
     } catch (error) {
@@ -100,7 +99,7 @@ export function AuthProvider({ children }) {
       
       const userData = await response.json();
       localStorage.setItem('user', JSON.stringify(userData));
-      setCurrentUser(userData);
+      setCurrentUser({ ...userData, token });
       return userData;
     } catch (error) {
       console.error('Error fetching current user:', error);

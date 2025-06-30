@@ -119,6 +119,42 @@ const MapPage = () => {
                 <div className="market-actions">
                   <button className="directions-btn">Get Directions</button>
                 </div>
+                {selectedMarket.ingredient_prices && selectedMarket.ingredient_prices.length > 0 && (() => {
+                  // Get only the latest price per ingredient
+                  const latestPrices = {};
+                  selectedMarket.ingredient_prices.forEach((price) => {
+                    const key = price.ingredient_id;
+                    if (!latestPrices[key] || new Date(price.date_recorded) > new Date(latestPrices[key].date_recorded)) {
+                      latestPrices[key] = price;
+                    }
+                  });
+                  const latestPriceList = Object.values(latestPrices);
+                  return (
+                    <div className="market-prices">
+                      <h3>Ingredient Prices</h3>
+                      <table className="ingredient-prices-table">
+                        <thead>
+                          <tr>
+                            <th>Ingredient</th>
+                            <th>Unit</th>
+                            <th>Price</th>
+                            <th>Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {latestPriceList.map((price) => (
+                            <tr key={price.id || `${price.ingredient_id}-${price.date_recorded}`}>
+                              <td>{price.ingredient_name}</td>
+                              <td>{price.unit || '-'}</td>
+                              <td>${price.price.toFixed(2)}</td>
+                              <td>{price.date_recorded ? new Date(price.date_recorded).toLocaleDateString() : '-'}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                })()}
               </div>
             ) : (
               <div className="market-placeholder">
