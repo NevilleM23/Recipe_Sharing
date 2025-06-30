@@ -18,18 +18,22 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     jwt.init_app(app)
 
-    # CORS setup to allow frontend at localhost:5173 and current Vercel production domain
-    CORS(
-        app,
-        resources={r"/api/*": {"origins": [
-            "http://localhost:5173",
-            "http://127.0.0.1:5173",
-            "https://recipe-sharing-hazel.vercel.app"
-        ]}},
-        supports_credentials=True,
-        allow_headers=["Content-Type", "Authorization"],
-        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-    )
+    # Dynamic CORS setup: allow all origins in development, restrict to Vercel/localhost in production
+    import os
+    if os.environ.get("FLASK_ENV") == "development" or os.environ.get("DEBUG") == "1":
+        CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True, allow_headers=["Content-Type", "Authorization"], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+    else:
+        CORS(
+            app,
+            resources={r"/api/*": {"origins": [
+                "http://localhost:5173",
+                "http://127.0.0.1:5173",
+                "https://recipe-sharing-hazel.vercel.app"
+            ]}},
+            supports_credentials=True,
+            allow_headers=["Content-Type", "Authorization"],
+            methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+        )
     from app.models import User, Recipe, Ingredient, RecipeIngredient, Market, PriceEntry, Favorite
     
     # Register blueprints
