@@ -14,5 +14,5 @@ class Config:
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'jwt-dev-secret-key')
     JWT_ACCESS_TOKEN_EXPIRES = 3600  # 1 hour in seconds
     CORS_SUPPORTS_CREDENTIALS = True
-    SESSION_COOKIE_SECURE =  False  # Set to True in production with HTTPS
-    SESSION_COOKIE_SAMESITE = 'Lax'  # Use 'Lax' for local development
+    SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', 'True') == 'True'
+    SESSION_COOKIE_SAMESITE = os.getenv('SESSION_COOKIE_SAMESITE', 'None')
