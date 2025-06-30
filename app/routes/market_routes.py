@@ -15,5 +15,12 @@ def get_markets():
         'contact': market.contact,
         'operating_hours': market.operating_hours,
         'latitude': market.latitude,
-        'longitude': market.longitude
+        'longitude': market.longitude,
+        'ingredient_prices': [{
+                'ingredient_id': price.ingredient.id,
+                'ingredient_name': price.ingredient.name,
+                'unit': price.ingredient.unit,
+                'price': price.price,
+                'date_recorded': price.date_recorded.isoformat() if price.date_recorded else None
+            } for price in market.prices]
     } for market in markets]), 200

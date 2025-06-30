@@ -46,18 +46,30 @@ const CreateRecipePage = () => {
   };
 
   const handleSubmit = async (e) => {
-      e.preventDefault();
-      setLoading(true);
-      setError('');
-  
-  try {
-    await RecipeService.createRecipe(formData, currentUser.token);
-    navigate('/my-recipes');
-  } catch (err) {
-    setError('Failed to create recipe: ' + err.message);
-    setLoading(false);
-  }
-};
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    // Prepare payload with correct types
+    const payload = {
+      ...formData,
+      cook_time: formData.cook_time ? Number(formData.cook_time) : undefined,
+      ingredients: formData.ingredients
+        .filter(ing => ing.name && ing.quantity)
+        .map(ing => ({
+          ...ing,
+          quantity: parseFloat(ing.quantity)
+        }))
+    };
+
+    try {
+      await RecipeService.createRecipe(payload, currentUser.token);
+      navigate('/profile');
+    } catch (err) {
+      setError('Failed to create recipe: ' + err.message);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="create-recipe-page">

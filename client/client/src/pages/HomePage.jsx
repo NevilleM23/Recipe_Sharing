@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import RecipeCard from '../components/RecipeCard';
 import SearchBar from '../components/Searchbar'
 import RecipeService from '../context/RecipeService';
+import { useAuth } from '../context/AuthContext';
 import './HomePage.css';
 
 const HomePage = () => {  
+  const { currentUser } = useAuth();
   const [recipes, setRecipes] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState(recipes);
   const [error, setError] = useState(null);
@@ -49,14 +51,19 @@ const HomePage = () => {
     setFilteredRecipes(result);
   };
   
-  const handleLike = (id) => {
-    setRecipes(recipes.map(recipe => 
-      recipe.id === id ? { ...recipe, isLiked: !recipe.isLiked, likes: recipe.isLiked ? recipe.likes - 1 : recipe.likes + 1 } : recipe
-    ));
-    
-    setFilteredRecipes(filteredRecipes.map(recipe => 
-      recipe.id === id ? { ...recipe, isLiked: !recipe.isLiked, likes: recipe.isLiked ? recipe.likes - 1 : recipe.likes + 1 } : recipe
-    ));
+  const handleLike = async (id) => {
+    if (!currentUser) return;
+    try {
+      await RecipeService.toggleFavorite(id, currentUser.token);
+      setRecipes(recipes.map(recipe => 
+        recipe.id === id ? { ...recipe, isLiked: !recipe.isLiked, likes: recipe.isLiked ? recipe.likes - 1 : recipe.likes + 1 } : recipe
+      ));
+      setFilteredRecipes(filteredRecipes.map(recipe => 
+        recipe.id === id ? { ...recipe, isLiked: !recipe.isLiked, likes: recipe.isLiked ? recipe.likes - 1 : recipe.likes + 1 } : recipe
+      ));
+    } catch (err) {
+      setError('Failed to update favorite.');
+    }
   };
 
   return (

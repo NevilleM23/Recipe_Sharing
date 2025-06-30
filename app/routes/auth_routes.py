@@ -4,6 +4,9 @@ from app.services.auth_service import AuthService
 from app.utils.decorators import validate_json
 from app.utils.validators import validate_email, validate_password
 
+import jwt
+from flask import current_app
+
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
 @auth_bp.route('/register', methods=['POST'])
@@ -34,6 +37,13 @@ def register():
     
     access_token = create_access_token(identity=user.id)
     
+    # Debug: decode and print the token's payload
+    try:
+        payload = jwt.decode(access_token, current_app.config['JWT_SECRET_KEY'], algorithms=["HS256"])
+        print('JWT payload for new user:', payload)
+    except Exception as e:
+        print('JWT decode error:', e)
+    
     return jsonify({
         'message': 'User registered successfully',
         'access_token': access_token,
@@ -56,6 +66,13 @@ def login():
     if error:
         return jsonify({'error': error}), 401
     
+    # Debug: decode and print the token's payload
+    try:
+        payload = jwt.decode(result['access_token'], current_app.config['JWT_SECRET_KEY'], algorithms=["HS256"])
+        print('JWT payload for login:', payload)
+    except Exception as e:
+        print('JWT decode error:', e)
+    
     return jsonify(result), 200
 
 @auth_bp.route('/me', methods=['GET'])
@@ -72,5 +89,5 @@ def get_current_user():
         'name': user.name,
         'email': user.email,
         'phone': user.phone
-    }), 200  
+    }), 200
 

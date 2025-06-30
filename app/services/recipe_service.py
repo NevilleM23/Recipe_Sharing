@@ -1,13 +1,15 @@
 from app.models import Recipe, Ingredient, RecipeIngredient, Favorite, db
 from sqlalchemy import or_, and_
+import sys
 
 class RecipeService:
     @staticmethod
     def get_all_recipes(filters=None):
         query = Recipe.query
-        
+        # Debug: print number of recipes before filters
+        print(f"[DEBUG] Total recipes in DB before filters: {query.count()}", file=sys.stderr)
         if filters:
-            if 'search' in filters:
+            if filters.get('search'):
                 search = f"%{filters['search']}%"
                 query = query.filter(
                     or_(
@@ -16,17 +18,18 @@ class RecipeService:
                     )
                 )
             
-            if 'difficulty' in filters:
+            if filters.get('difficulty'):
                 query = query.filter_by(difficulty=filters['difficulty'])
             
-            if 'budget_rating' in filters:
+            if filters.get('budget_rating'):
                 query = query.filter_by(budget_rating=filters['budget_rating'])
             
-            if 'ingredient' in filters:
+            if filters.get('ingredient'):
                 query = query.join(Recipe.ingredients).join(RecipeIngredient.ingredient).filter(
                     Ingredient.name.ilike(f"%{filters['ingredient']}%")
                 )
-        
+        # Debug: print number of recipes after filters
+        print(f"[DEBUG] Total recipes in DB after filters: {query.count()}", file=sys.stderr)
         return query.all()
 
     @staticmethod
@@ -41,10 +44,10 @@ class RecipeService:
             image_url=data.get('image_url'),
             user_id=user_id
         )
-        
         db.session.add(recipe)
         db.session.commit()
-        
+        # Debug: print recipe created
+        print(f"[DEBUG] Created recipe with ID: {recipe.id}", file=sys.stderr)
         if 'ingredients' in data:
             for ingredient_data in data['ingredients']:
                 ingredient = Ingredient.query.filter_by(name=ingredient_data['name']).first()
@@ -56,7 +59,6 @@ class RecipeService:
                     )
                     db.session.add(ingredient)
                     db.session.commit()
-                
                 recipe_ingredient = RecipeIngredient(
                     recipe_id=recipe.id,
                     ingredient_id=ingredient.id,
@@ -64,8 +66,9 @@ class RecipeService:
                     notes=ingredient_data.get('notes')
                 )
                 db.session.add(recipe_ingredient)
-        
         db.session.commit()
+        # Debug: print total recipes after creation
+        print(f"[DEBUG] Total recipes in DB after creation: {Recipe.query.count()}", file=sys.stderr)
         return recipe
 
     @staticmethod

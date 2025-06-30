@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { useAuth } from '../context/AuthContext';
 import RecipeCard from '../components/RecipeCard';
-import RecipeService from '../services/RecipeService';
+import RecipeService from '../context/RecipeService';
 import './UserProfile.css';
 
 const ProfilePage = () => {

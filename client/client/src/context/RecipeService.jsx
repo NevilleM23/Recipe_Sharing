@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-const API_URL = `${API_BASE}/recipes`; // Fixed: now includes /api/recipes
+const API_URL = `${API_BASE}/recipes`; // Removed trailing slash
 
 const RecipeService = {
   getAllRecipes: async () => {
@@ -17,9 +17,17 @@ const RecipeService = {
   },
 
   createRecipe: async (recipeData, token) => {
+    // Always get token from localStorage if not provided
+    const authToken = token || localStorage.getItem('access_token');
+    // Debug: log the payload and token
+    console.log('Payload sent to backend:', recipeData);
+    console.log('Token sent to backend:', authToken);
+    if (!authToken) {
+      throw new Error('No authentication token provided to RecipeService.createRecipe');
+    }
     const response = await axios.post(API_URL, recipeData, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${authToken}`
       },
       withCredentials: true
     });
@@ -37,7 +45,9 @@ const RecipeService = {
   },
 
   getUserRecipes: async (userId, token) => {
-    const response = await axios.get(`${API_BASE}/api/users/${userId}/recipes`, {
+    const url = `${API_URL}/user/${userId}`;
+    console.log('Fetching user recipes from:', url, 'with token:', token);
+    const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -47,7 +57,9 @@ const RecipeService = {
   },
 
   getFavorites: async (token) => {
-    const response = await axios.get(`${API_BASE}/api/favorites`, {
+    const url = `${API_URL}/favorites`;
+    console.log('Fetching favorites from:', url, 'with token:', token);
+    const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${token}`
       },
