@@ -18,14 +18,13 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     jwt.init_app(app)
 
-    # CORS setup to allow frontend at localhost:5173 and Vercel
+    # CORS setup to allow frontend at localhost:5173 and current Vercel production domain
     CORS(
         app,
         resources={r"/api/*": {"origins": [
             "http://localhost:5173",
             "http://127.0.0.1:5173",
-            "https://recipe-sharing-b5hbvkez3-nevilles-projects-86455904.vercel.app"
-            "https://recipe-sharing.vercel.app",
+            "https://recipe-sharing-hazel.vercel.app"
         ]}},
         supports_credentials=True,
         allow_headers=["Content-Type", "Authorization"],
