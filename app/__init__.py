@@ -25,6 +25,7 @@ def create_app(config_class=Config):
             "http://localhost:5173",
             "http://127.0.0.1:5173",
             "https://recipe-sharing-b5hbvkez3-nevilles-projects-86455904.vercel.app"
+            "https://recipe-sharing.vercel.app",
         ]}},
         supports_credentials=True,
         allow_headers=["Content-Type", "Authorization"],
